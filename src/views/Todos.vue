@@ -28,7 +28,7 @@
     import TodoList from '@/components/TodoList'
     import AddTodo from '@/components/AddTodo'
     import Loader from '@/components/Loader'
-    import data from '../data.json'
+    import data from '../../data.json'
 
     export default {
         name: 'Todos',

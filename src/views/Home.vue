@@ -17,8 +17,8 @@
 </template>
 
 <script>
-    import notes from '../notes.json'
-    import data from '../data.json'
+    import notes from '../../notes.json'
+    import data from '../../data.json'
     import Loader from '@/components/Loader'
     import NoteList from "../components/NoteList";
     import AddNote from "../components/AddNote";
