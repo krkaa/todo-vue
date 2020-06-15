@@ -18,7 +18,7 @@
 
 <script>
     import notes from '../../notes.json'
-    import data from '../../data.json'
+    import data from '../../db.json'
     import Loader from '@/components/Loader'
     import NoteList from "../components/NoteList";
     import AddNote from "../components/AddNote";
