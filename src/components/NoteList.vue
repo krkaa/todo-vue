@@ -5,6 +5,7 @@
                     v-for="(note, index) of notes" :key="note.id"
                     v-bind:note="note"
                     v-bind:index="index"
+                    v-bind:todo="note.todos"
                     v-on:remove-note="removeNote"
             />
         </ul>

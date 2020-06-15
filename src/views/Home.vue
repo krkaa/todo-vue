@@ -17,8 +17,6 @@
 </template>
 
 <script>
-    import notes from '../../notes.json'
-    import data from '../../db.json'
     import Loader from '@/components/Loader'
     import NoteList from "../components/NoteList";
     import AddNote from "../components/AddNote";
@@ -28,7 +26,6 @@
         data() {
             return {
                 notes: [],
-                data: [],
                 loading: true
             }
         },
@@ -37,13 +34,12 @@
         },
 
         mounted() {
-            //fake json with fake latency
-            console.log(data)
-            setTimeout(() => {
-                this.notes = notes
-                this.data = data
-                this.loading = false
-            },1000)
+            fetch('https://my-json-server.typicode.com/krkaa/todo-vue/notes?_embed=todos')
+                .then(response => response.json())
+                .then(json => {
+                    this.notes = json
+                    this.loading = false
+                })
         },
         computed: {
           lastId() {
@@ -52,9 +48,16 @@
         },
         methods: {
             removeNote(id) {
-                this.notes = notes.filter(item => item.id !== id)
-                this.data = this.data.filter(item => item.noteId !== id)
-                console.log(this.notes)
+                fetch(`https://my-json-server.typicode.com/krkaa/todo-vue/notes/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    }
+                })
+                .then(res => res.json())
+                .then(res => {
+                    this.notes = this.notes.filter(item => item.id !== id)
+                })
             },
             addNote(note) {
                 console.log(note)

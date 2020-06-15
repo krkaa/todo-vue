@@ -28,7 +28,6 @@
     import TodoList from '@/components/TodoList'
     import AddTodo from '@/components/AddTodo'
     import Loader from '@/components/Loader'
-    import data from '../../db.json'
 
     export default {
         name: 'Todos',
@@ -59,15 +58,12 @@
             }
         },
         mounted() {
-            //fake json with fake latency
-            setTimeout(() => {
-                Object.keys(data).map(i => data[i].noteId === this.id
-                    ? this.todos.push(data[i])
-                    : undefined
-                )
-                console.log(this.todos)
-                this.loading = false
-            }, 1000)
+            fetch(`https://my-json-server.typicode.com/krkaa/todo-vue/todos?noteId=${this.id}`)
+                .then(response => response.json())
+                .then(json => {
+                    this.todos = json
+                    this.loading = false
+                })
         },
         methods: {
             removeTodo(id) {
