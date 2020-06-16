@@ -6,6 +6,7 @@
                     v-bind:todo="todo"
                     v-bind:index="index"
                     v-on:remove-todo="removeTodo"
+                    v-on:update-todo="updateTodo"
             />
         </ul>
     </div>
@@ -23,6 +24,9 @@
         methods: {
             removeTodo(id) {
                 this.$emit('remove-todo', id)
+            },
+            updateTodo(id, title) {
+                this.$emit('update-todo', [id, title])
             }
         }
     }

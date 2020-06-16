@@ -5,7 +5,7 @@
                     v-for="(note, index) of notes" :key="note.id"
                     v-bind:note="note"
                     v-bind:index="index"
-                    v-bind:todo="note.todos"
+                    v-bind:todo="todos"
                     v-on:remove-note="removeNote"
             />
         </ul>
@@ -16,7 +16,7 @@
     import NoteItem from '@/components/NoteItem'
 
     export default {
-        props: ['notes'],
+        props: ['notes', 'todos'],
         name: 'NoteList',
         components: {
             NoteItem

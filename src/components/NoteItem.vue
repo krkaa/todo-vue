@@ -1,31 +1,32 @@
 <template>
-    <div>
-        <li>
-            <span>
+    <li>
+        <span>
             <strong>
                 {{index + 1}}
             </strong>
-            <router-link :to="path">
-                {{note.title | uppercase}}
-            </router-link>
 
-        </span>
-            <button
-                    class="button"
-                    v-on:click="$emit('remove-note', note.id)"
-            >&times;
-            </button>
-
-        </li>
-        <div class="dropdown">
-            <button class="btn" style="border-left:1px solid navy">
-                &#8595;
-            </button>
-            <div class="dropdown-content">
-                <p v-for="(t,index) of todo">{{index < 3 ? t.title : null}}</p>
+            <div class="dropdown">
+                <router-link :to="path" class="link">
+                    {{note.title | uppercase}}
+                </router-link>
+                <div class="dropdown-content" v-if="filteredTodos.length">
+                    <p v-for="(t,index) of filteredTodos">
+                        {{
+                            index < 3
+                            ? `${index + 1}. ${t.title}`
+                            : null
+                        }}
+                    </p>
+                </div>
             </div>
-        </div>
-    </div>
+        </span>
+        <button
+                class="button"
+                v-on:click="$emit('remove-note', note.id)"
+        >&times;
+        </button>
+
+    </li>
 </template>
 
 <script>
@@ -46,6 +47,13 @@
                 path: `todos/${this.note.id}`
             }
         },
+        computed: {
+            filteredTodos() {
+                if (this.todo) {
+                    return this.todo.filter(item => item.noteId === this.note.id)
+                }
+            }
+        },
         filters: {
             uppercase(value) {
                 return value.toUpperCase()
@@ -61,6 +69,7 @@
         justify-content: space-between;
         margin-bottom: 10px;
         padding: .3rem 2rem;
+        position: relative;
     }
 
     .button {
@@ -105,21 +114,37 @@
         text-decoration: line-through;
     }
 
+    a.link {
+        text-decoration: none;
+        margin-left: 10px;
+        color: #0f0f0f;
+        transition: color .1s ease-in;
+
+        &:hover {
+            color: rgba(#0f0f0f, .6);
+        }
+
+        &:active {
+            color: rgba(#0f0f0f, .4);
+        }
+    }
+
     .dropdown {
         position: absolute;
         display: inline-block;
+        transition: hover .15s ease-in;
 
-
-        /* Dropdown Content (Hidden by Default) */
         &-content {
             display: none;
             position: absolute;
             background-color: #f1f1f1;
             min-width: 160px;
+            width: max-content;
             z-index: 1;
+            text-align: left;
+            padding: 10px 25px;
         }
 
-        /* Links inside the dropdown */
         &a {
             color: black;
             padding: 12px 16px;
@@ -127,19 +152,12 @@
             display: block;
         }
 
-        /* Change color of dropdown links on hover */
         &a:hover {
             background-color: #ddd
         }
 
-        /* Show the dropdown menu on hover */
         &:hover .dropdown-content {
             display: block;
-        }
-
-        /* Change the background color of the dropdown button when the dropdown content is shown */
-        .btn:hover, &:hover .btn {
-            background-color: #0b7dda;
         }
     }
 </style>

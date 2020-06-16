@@ -1,19 +1,29 @@
 <template>
     <li>
-        <span v-bind:class="{done: todo.completed}">
+        <span
+                v-bind:class="{done: todo.completed}"
+        >
             <input
                     type="checkbox"
                     v-on:change="todo.completed = !todo.completed"
+                    v-bind:checked="todo.completed"
             >
             <strong>
                 {{index + 1}}
             </strong>
-            {{todo.title | uppercase}}
+            <label
+                    v-show="toggled == false"
+                    @dblclick = "toggled = true"
+            >{{todo.title}}</label>
+            <input v-show = "toggled == true" v-model = "todos.title"
+                   v-on:blur= "toggled = false; $emit('update-todo', todo.id, todos.title)"
+                   @keyup.enter = "toggled = false; $emit('update-todo', todo.id, todos.title)">
         </span>
         <button
                 class="button"
                 v-on:click="$emit('remove-todo', todo.id)"
-        >&times;</button>
+        >&times;
+        </button>
     </li>
 </template>
 
@@ -25,6 +35,12 @@
                 required: true
             },
             index: Number
+        },
+        data() {
+            return {
+                toggled: false,
+                todos: this.todo
+            }
         },
         filters: {
             uppercase(value) {
@@ -52,9 +68,11 @@
         cursor: pointer;
         transition: background .15s ease-in-out;
         color: white;
+
         &:hover {
             background: rgba(#ff0000, .6);
         }
+
         &:active {
             background: rgba(#ff0000, .4);
         }
