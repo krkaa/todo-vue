@@ -8,11 +8,14 @@
         <hr>
         <Loader v-if="loading"/>
         <NoteList
-                v-else="notes.length"
+                v-else-if="notes.length"
                 v-bind:notes="notes"
                 v-bind:todos="todos"
                 @remove-note="removeNote"
         />
+        <p v-else>
+            List of note is empty, type note in input and press button for add note
+        </p>
     </div>
 </template>
 
@@ -35,7 +38,6 @@
             Loader, NoteList, AddNote
         },
         mounted() {
-            console.log('App mounted!');
             if (localStorage.getItem('notes')) {
                 this.notes = JSON.parse(localStorage.getItem('notes'))
                 if (localStorage.getItem('todos')) {
@@ -47,7 +49,6 @@
         watch: {
             notes: {
                 handler() {
-                    console.log('Notes changed!');
                     localStorage.setItem('notes', JSON.stringify(this.notes));
                 },
                 deep: true,

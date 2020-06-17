@@ -1,9 +1,10 @@
 <template>
-    <div>
+    <div class="todoLabel">
         <label
                 v-show="toggled == false"
                 @dblclick="toggled = true"
-        >{{notes.title}}</label>
+                class="label"
+        >Note: <strong>{{notes.title}}</strong></label>
         <input v-show="toggled == true" v-model="note.title"
                v-on:blur="isCancel= true; toggled = false; $emit('update-note', notes.id, notes.title)"
                @keyup.enter="isCancel= true; toggled = false; $emit('update-note', notes.id, notes.title)">
@@ -12,12 +13,12 @@
                 @click="
                 old = Object.assign({}, notes);
                 $emit('update-note', cancelNote.id, cancelNote.title)"
-        >cancel edit
+        >&larr;
         </button>
         <button
                 :disabled="isEmpty(old)"
                 @click="$emit('update-note', old.id, old.title)"
-        >cancel changes
+        >&rarr;
         </button>
     </div>
 </template>
@@ -54,5 +55,9 @@
 </script>
 
 <style scoped>
-
+    .todoLabel{ margin-top: 10px}
+    .label {
+        margin-right: 10px;
+        font-size: 20px;
+    }
 </style>

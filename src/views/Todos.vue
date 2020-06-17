@@ -1,6 +1,6 @@
 <template>
     <div>
-        <router-link to="/">Home</router-link>
+        <router-link to="/" class="linkHome">{{'Home' | uppercase}}</router-link>
         <TodoLabel
                 v-if="seekNote"
                 v-bind:note="seekNote"
@@ -123,15 +123,34 @@
                     ? item.title = title
                     : item.title)
             }
+        },
+        filters: {
+            uppercase(value) {
+                return value.toUpperCase()
+            }
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .select {
         margin-bottom: 20px;
         padding: 3px;
         font-size: 20px;
         outline: none;
+    }
+    .linkHome {
+        text-decoration: none;
+        color: #0f0f0f;
+        font-weight: bold;
+        margin-bottom: 30px;
+        font-size: 22px;
+        transition: color .11s ease-in-out;
+        &:hover {
+            color: rgba(#0f0f0f, .6);
+        }
+        &:active {
+            color: rgba(#0f0f0f, .4);
+        }
     }
 </style>

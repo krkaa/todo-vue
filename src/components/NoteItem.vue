@@ -1,34 +1,34 @@
 <template>
     <li>
-        <span>
-            <strong>
-                {{index + 1}}
-            </strong>
+        <ul>
+            <ol class="ol">
+                <span>
+                    <strong>
+                        {{index + 1 + '.'}}
+                    </strong>
 
-            <div class="dropdown">
-                <router-link :to="path" class="link">
-                    {{note.title | uppercase}}
-                </router-link>
-                <div class="dropdown-content" v-if="filteredTodos.length">
-                    <p v-for="(t,index) of filteredTodos">
-                        {{
-                            index < 3
-                            ? `${index + 1}. ${t.title}`
-                            : null
-                        }}
-                    </p>
-                </div>
-            </div>
-        </span>
-        <button
-                class="button"
-                v-on:click="$emit('remove-note', note.id)"
-        >&times;
-        </button>
+                        <router-link :to="path" class="link">
+                            {{note.title | uppercase}}
+                        </router-link>
+                </span>
+                <ShowModal
+                        v-on:delete="$emit('remove-note', note.id)"
+                        v-bind:headerPhrase="'ARE you SURE to DELETE THiS NOTE?' | uppercase"
+                />
+            </ol>
+            <li
+                    v-for="(t,index) of filteredTodos" v-if="index < 3"
+                    class="li"
+            >
+                <p class="todos" v-if="filteredTodos.length">{{index + 1 +'. '+t.title}}</p>
+            </li>
+        </ul>
     </li>
 </template>
 
 <script>
+    import ShowModal from "./ShowModal";
+
     export default {
         props: {
             note: {
@@ -46,6 +46,9 @@
                 path: `todos/${this.note.id}`
             }
         },
+        components: {
+            ShowModal
+        },
         computed: {
             filteredTodos() {
                 if (this.todo) {
@@ -62,13 +65,35 @@
 </script>
 
 <style lang="scss" scoped>
-    li {
-        border: 1px solid #222222;
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .ol {
+        background: #f1f1f1;
         display: flex;
         justify-content: space-between;
         margin-bottom: 10px;
         padding: .3rem 2rem;
         position: relative;
+        margin-bottom: 0;
+        font-size: 20px;
+    }
+
+    .li {
+        list-style-type: none;
+        text-align: left;
+        background: #959292;
+        padding: .3rem 3rem;
+        font-size: 18px;
+        color: floralwhite;
+        & .todos {
+            margin: 0;
+        }
+        &:nth-child(2n) {
+            background: #585757;
+        }
     }
 
     .button {
