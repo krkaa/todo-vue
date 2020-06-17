@@ -63,6 +63,8 @@
         methods: {
             removeNote(id) {
                 this.notes = this.notes.filter(item => item.id !== id)
+                this.todos = this.todos.filter(item => item.noteId !== id)
+                localStorage.setItem('todos', JSON.stringify(this.todos))
             },
             addNote(note) {
                 this.notes.push(note)

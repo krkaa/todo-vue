@@ -25,7 +25,6 @@
                 v-on:click="$emit('remove-note', note.id)"
         >&times;
         </button>
-
     </li>
 </template>
 

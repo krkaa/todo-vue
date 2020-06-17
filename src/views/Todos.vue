@@ -1,9 +1,11 @@
 <template>
     <div>
         <router-link to="/">Home</router-link>
-        <div>
-            <p>{{note}}</p>
-        </div>
+        <TodoLabel
+                v-if="seekNote"
+                v-bind:note="seekNote"
+                @update-note="updateNote"
+        />
         <hr>
         <select v-model="filter" class="select">
             <option value="all">all</option>
@@ -33,13 +35,13 @@
     import TodoList from '@/components/TodoList'
     import AddTodo from '@/components/AddTodo'
     import Loader from '@/components/Loader'
+    import TodoLabel from "../components/TodoLabel";
 
     export default {
         name: 'Todos',
         data() {
             return {
                 todos: [],
-                note: '',
                 loading: true,
                 filter: 'all',
                 id: +this.$route.params.id,
@@ -49,9 +51,15 @@
             }
         },
         components: {
-            TodoList, AddTodo, Loader
+            TodoLabel,
+            TodoList,
+            AddTodo,
+            Loader
         },
         computed: {
+            seekNote() {
+                return this.notes.filter(i => i.id === this.id)[0]
+            },
             filteredTodos() {
                 if (this.filter === 'all') {
                     return this.todos.filter(i => i.noteId === this.id)
@@ -74,25 +82,25 @@
                     if (localStorage.getItem('todos')) {
                         this.todos = JSON.parse(localStorage.getItem('todos'))
                     }
-                    console.log('privet')
-                    this.note = note.title
                     this.err = false
-                }
-                else {
-                    console.log('haha')
+                } else {
                     this.err = true
                 }
-            }
-            else {
+            } else {
                 this.err = true
             }
-                this.loading = false
+            this.loading = false
         },
         watch: {
             todos: {
                 handler() {
-                    console.log('Todos changed!');
                     localStorage.setItem('todos', JSON.stringify(this.todos));
+                },
+                deep: true,
+            },
+            notes: {
+                handler() {
+                    localStorage.setItem('notes', JSON.stringify(this.notes));
                 },
                 deep: true,
             }
@@ -107,6 +115,11 @@
             },
             updateTodo(id, title) {
                 this.todos.forEach(item => item.id === id
+                    ? item.title = title
+                    : item.title)
+            },
+            updateNote(id, title) {
+                this.notes.forEach(item => item.id === id
                     ? item.title = title
                     : item.title)
             }

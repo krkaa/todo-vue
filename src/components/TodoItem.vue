@@ -14,7 +14,7 @@
             <label
                     v-show="toggled == false"
                     @dblclick = "toggled = true"
-            >{{todo.title}}</label>
+            >{{todo.title | uppercase}}</label>
             <input v-show = "toggled == true" v-model = "todos.title"
                    v-on:blur= "toggled = false; $emit('update-todo', todo.id, todos.title)"
                    @keyup.enter = "toggled = false; $emit('update-todo', todo.id, todos.title)">
