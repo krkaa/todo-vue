@@ -2,7 +2,7 @@
 
 ##Project deploy
 ```
-<http://krkaa.github.io//todo-vue>
+http://alive-clouds.surge.sh/
 ```
 
 ## Project setup
